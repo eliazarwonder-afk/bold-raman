@@ -103,7 +103,7 @@ class Worker:
                     asyncio.gather(*self._active_tasks, return_exceptions=True),
                     timeout=self.grace_period,
                 )
-            except TimeoutError:
+            except (TimeoutError, asyncio.TimeoutError):
                 for t in self._active_tasks:
                     t.cancel()
 

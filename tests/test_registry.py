@@ -46,5 +46,5 @@ async def test_registry_timeout() -> None:
         return "done"
 
     defn = registry.register(slow_task, name="slow", timeout_seconds=0.05)
-    with pytest.raises(asyncio.TimeoutError):
+    with pytest.raises((TimeoutError, asyncio.TimeoutError)):
         await defn.execute()

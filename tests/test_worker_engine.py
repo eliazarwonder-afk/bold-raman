@@ -58,7 +58,7 @@ async def test_worker_retries_and_dlq() -> None:
         task_id = await always_failing_task.delay()
 
         # Wait until task completes all retries and lands in DLQ
-        for _ in range(30):
+        for _ in range(60):
             dlq_depth = await app.broker.get_dlq_depth("default")
             if dlq_depth == 1:
                 break

@@ -96,7 +96,7 @@ class MemoryBroker(AbstractBroker):
         q = self._get_queue(queue)
         try:
             envelope = await asyncio.wait_for(q.get(), timeout=timeout)
-        except TimeoutError:
+        except (TimeoutError, asyncio.TimeoutError):
             return None
 
         # Track as in-flight pending task
@@ -198,7 +198,7 @@ class MemoryBroker(AbstractBroker):
         try:
             await asyncio.wait_for(event.wait(), timeout=timeout)
             return self._results.get(task_id)
-        except TimeoutError:
+        except (TimeoutError, asyncio.TimeoutError):
             return None
         finally:
             self._result_waiters.pop(task_id, None)
