@@ -1,5 +1,7 @@
 import asyncio
+
 from rich import print as rprint
+
 from pulsequeue import PulseQueue
 
 # Initialize PulseQueue with in-memory broker (or "redis://localhost:6379/0")
@@ -43,10 +45,14 @@ async def main() -> None:
 
     rprint("\n[bold]2. Waiting for results...[/bold]")
     res1 = await app.get_result(task_id1, timeout=3.0)
-    rprint(f"  [green][OK] Email Result:[/green] {res1.return_value if res1 else 'timeout'} (status: {res1.status.value if res1 else 'N/A'})")
+    rprint(
+        f"  [green][OK] Email Result:[/green] {res1.return_value if res1 else 'timeout'} (status: {res1.status.value if res1 else 'N/A'})"
+    )
 
     res2 = await app.get_result(task_id2, timeout=3.0)
-    rprint(f"  [green][OK] Fibonacci Result:[/green] {res2.return_value if res2 else 'timeout'} (status: {res2.status.value if res2 else 'N/A'})")
+    rprint(
+        f"  [green][OK] Fibonacci Result:[/green] {res2.return_value if res2 else 'timeout'} (status: {res2.status.value if res2 else 'N/A'})"
+    )
 
     # Graceful shutdown
     rprint("\n[bold]3. Shutting down worker...[/bold]")

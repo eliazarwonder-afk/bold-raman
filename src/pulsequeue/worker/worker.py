@@ -7,7 +7,6 @@ import socket
 import time
 import traceback
 import uuid
-
 from typing import Any
 
 from pulsequeue.broker.base import AbstractBroker

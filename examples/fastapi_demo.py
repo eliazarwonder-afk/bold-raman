@@ -1,7 +1,9 @@
 """Example: Integrating PulseQueue into FastAPI web services for asynchronous background processing."""
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Any, AsyncGenerator
+from typing import Any
+
 from pulsequeue import PulseQueue
 
 # Initialize PulseQueue application
@@ -11,6 +13,7 @@ pq = PulseQueue(broker_url="memory://")
 @pq.task(max_retries=3, timeout_seconds=30.0)
 async def generate_pdf_report(report_id: str, client_id: str) -> dict[str, str]:
     import asyncio
+
     # Simulate heavy PDF generation / rasterization
     await asyncio.sleep(1.0)
     return {"report_id": report_id, "url": f"https://s3.amazonaws.com/reports/{report_id}.pdf"}

@@ -12,6 +12,31 @@ Designed as a modern alternative to Celery, PulseQueue solves the pain points of
 
 ---
 
+### 📚 Documentation Navigation
+
+* 🚀 **[GitHub Deployment & Operations Guide](DEPLOYMENT.md)** - Step-by-step GitHub setup, CI/CD, and production deployment (Docker, Systemd, Kubernetes)
+* 📊 **[Performance Benchmarks](BENCHMARKS.md)** - Head-to-head comparison against Celery, ARQ, and RQ
+* 🔒 **[Security Policy & Doctrine](SECURITY.md)** - Security disclosure policy and RCE elimination analysis
+* 🤝 **[Contributing Guidelines](CONTRIBUTING.md)** - Code standards, testing, and PR workflow
+* 📜 **[Architectural Notice & Attributions](NOTICE.md)** - Legal notices and algorithm citations
+* 📄 **[MIT License](LICENSE)** - Open-source license
+
+---
+
+## 📑 Table of Contents
+
+- [Architecture Diagram](#-architecture-diagram)
+- [Key Features](#-key-features)
+- [Installation](#-installation)
+- [Quickstart](#-quickstart)
+- [Terminal Monitoring & CLI Tools](#-terminal-monitoring--cli-tools)
+- [Docker Compose Deployment](#-docker-compose-deployment)
+- [Testing & Quality Assurance](#-testing--quality-assurance)
+- [System Design Trade-offs](#-system-design-trade-offs-interview-talking-points)
+- [License](#-license)
+
+---
+
 ## 🎯 Architecture Diagram
 
 ```mermaid
@@ -100,27 +125,30 @@ from pulsequeue import PulseQueue
 # Initialize with in-memory broker (or "redis://localhost:6379/0")
 app = PulseQueue("memory://")
 
+
 # Register an asynchronous background task with exponential backoff retries
 @app.task(max_retries=3, backoff_base=1.0)
 async def send_welcome_email(user_id: int, email: str) -> dict[str, str]:
     await asyncio.sleep(0.5)  # Simulate I/O
     return {"status": "sent", "recipient": email}
 
+
 async def main():
     await app.connect()
-    
+
     # 1. Non-blocking asynchronous dispatch
     task_id = await send_welcome_email.delay(101, "ada@example.com")
     print(f"Dispatched task: {task_id}")
 
     # 2. Delayed dispatch (run after 10 seconds)
     delayed_id = await send_welcome_email.delay_after(10.0, 102, "charles@example.com")
-    
+
     # 3. Retrieve results with timeout
     result = await app.get_result(task_id, timeout=5.0)
     print(f"Task outcome: {result.return_value} (status: {result.status})")
 
     await app.close()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

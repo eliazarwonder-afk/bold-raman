@@ -1,7 +1,9 @@
 """Example: Fault tolerance, Exponential Backoff with Jitter, and Dead Letter Queue (DLQ)."""
 
 import asyncio
+
 from rich import print as rprint
+
 from pulsequeue import PulseQueue
 
 app = PulseQueue(broker_url="memory://")
