@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import time
 import uuid
-from enum import StrEnum
+from enum import Enum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class TaskStatus(StrEnum):
+class TaskStatus(str, Enum):
     """Lifecycle states of a distributed task."""
 
     PENDING = "PENDING"
